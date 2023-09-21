@@ -1,23 +1,23 @@
 // Set the URL to a variable
 const url = 'https://2u-data-curriculum-team.s3.amazonaws.com/dataviz-classroom/v1.1/14-Interactive-Web-Visualizations/02-Homework/samples.json';
 
-
 // Function to update the demographic info panel
 function updateDemographicInfo(metadata) {
     const metadataPanel = d3.select('#sample-metadata');
-    metadataPanel.html(''); // This clears out previous data table
+    metadataPanel.html(''); // This clears out the previous data table
 
     // Iterate through metadata and display key-value pairs
     Object.entries(metadata).forEach(([key, value]) => {
-        metadataPanel.append('p').text(`${key}:${value}`);
+        metadataPanel.append('p').text(`${key}: ${value}`);
     });
 }
 
-// Display the default Bar chart
+// Function to create the default Bar chart
 function createBarChart(data) {
     let sample_values = data.sample_values;
     let otu_ids = data.otu_ids;
     let otu_labels = data.otu_labels;
+
     // Slice the first 10 values that were the highest, use .reverse() since they are ordered
     // smallest to largest
     let trace = {
@@ -38,7 +38,7 @@ function createBarChart(data) {
     Plotly.newPlot('bar', [trace], layout);
 }
 
-// Display the default Bubble chart
+// Function to create the default Bubble chart
 function createBubbleChart(data) {
     let otu_ids = data.otu_ids;
     let sample_values = data.sample_values;
@@ -50,7 +50,6 @@ function createBubbleChart(data) {
         text: otu_labels,
         mode: 'markers',
         marker: {
-            // https://plotly.com/javascript/colorscales/ for fun colors ;)
             colorscale: 'Picnic',
             color: otu_ids,
             size: sample_values
@@ -69,7 +68,7 @@ function createBubbleChart(data) {
     Plotly.newPlot('bubble', [trace], layout);
 }
 
-// Function to fetch and load data
+// Function to load data and initialize the dashboard
 function loadData() {
     // Load in the JSON from the URL
     d3.json(url).then(data => {
@@ -86,10 +85,10 @@ function loadData() {
 // Function to update the dashboard for new data that is selected
 function optionChanged(selectedIndividual, data) {
     // Fetch data for the selected individual
-    var individualData = data.samples.find(sample => sample.id === selectedIndividual);
-    var metadata = data.metadata.find(metadata => metadata.id.toString() === selectedIndividual);
+    const individualData = data.samples.find(sample => sample.id === selectedIndividual);
+    const metadata = data.metadata.find(metadata => metadata.id.toString() === selectedIndividual);
 
-    // Update demographic
+    // Update demographic info
     updateDemographicInfo(metadata);
 
     // Create horizontal bar chart
@@ -97,7 +96,10 @@ function optionChanged(selectedIndividual, data) {
 
     // Create bubble chart
     createBubbleChart(individualData);
+
+    // Add code for creating the gauge chart here, if needed
 }
 
 // Initialize the dashboard
 loadData();
+

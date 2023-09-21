@@ -86,8 +86,8 @@ function loadData() {
 // Function to update the dashboard for new data that is selected
 function optionChanged(selectedIndividual, data) {
     // Fetch data for the selected individual
-    const individualData = data.samples.find(sample => sample.id === selectedIndividual);
-    const metadata = data.metadata.find(metadata => metadata.id.toString() === selectedIndividual);
+    var individualData = data.samples.find(sample => sample.id === selectedIndividual);
+    var metadata = data.metadata.find(metadata => metadata.id.toString() === selectedIndividual);
 
     // Update demographic
     updateDemographicInfo(metadata);
